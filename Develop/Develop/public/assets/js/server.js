@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const fs = require("fs");
 const path = require("path");
 const app = express();
@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 // GET route to the notes page
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/notes.html'));
+    res.sendFile(path.join(__dirname, '../../notes.html'));
 });
 
 
