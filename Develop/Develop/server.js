@@ -37,26 +37,22 @@ app.get('/api/notes', (req, res) => {
 // POST route for adding notes
 app.post('/api/notes', (req, res) => {
     const newNote = req.body;
+    // Generate unique id for new note
     newNote.id = generateUniqueId({length: 5});
-    // Write updated notes to db/db.json file
-    const allNotes = JSON.stringify(oldNote, null, 2);
-
-    // Reads notes from db/db.json file
-    fs.readFile('db/db.json', 'utf8', (err, data) => {
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Error in reading notes' });
         }
-        // Adds new note to array of notes
         const notes = JSON.parse(data);
         notes.push(newNote);
 
-        // Writes the updated notes back to db/db.json
-        fs.writeFile('db/db.json', JSON.stringify(notes), (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Error in adding note' });
-            }
+    // Reads notes from db/db.json file
+    fs.writeFile('./db/db.json', JSON.stringify(notes, null, 2), (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error in adding note' });
+        }
             res.json(newNote); // Send the new note as a response
         });
     });
