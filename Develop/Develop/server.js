@@ -58,6 +58,24 @@ app.post('/api/notes', (req, res) => {
     });
 });
 
+// delete route for deleting notes
+app.delete('/api/notes/:id', (req, res) => {
+    const noteId = req.params.id;   
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+        const notes = JSON.parse(data);
+        const updatedNotes = notes.filter(note => note.id !== noteId);
+        fs.writeFile('./db/db.json', JSON.stringify(updatedNotes, null, 2), (err) => {
+            if (err) {
+                console.error(err);
+            }
+            res.json(updatedNotes); // Send the updated note list as a response
+        });
+    });
+})
+;
 app.listen(PORT, () => 
     console.log(`App listening on port ${PORT}!`)
 );
